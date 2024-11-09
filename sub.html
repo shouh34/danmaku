@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser Game with Player Shooting</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+</head>
+<body>
+    <div id="gameContainer"></div>
+
+    <script>
+
+        //タイトル画面
+        class TitleScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'TitleScene' });
+            }
+
+            preload() {
+                // メニューに使う画像を読み込む（ここでは仮の画像）
+                this.load.image('startButton', 'img/ddd.png');
+                this.load.image('settingsButton', 'img/settings.png');
+                this.load.image('background', 'img/haikei.png');
+                this.load.image('logo', 'img/logo.png');
+                this.load.audio('backgroundMusic', 'audio/bgm.mp3');
+
+
+            }
+
+            create() {
+                // 背景画像を設定
+                this.add.image(400, 300, 'background');
+                this.background1 = this.add.tileSprite(400, 300, 800, 600, 'background');
+
+ 
+
+
+                // 「ゲーム開始」ボタンを追加
+                this.startButton = this.add.sprite(400, 350, 'startButton').setInteractive();
+
+                // ボタンがクリックされたときの処理
+                this.startButton.on('pointerdown', () => {
+                    this.scene.start('MainScene'); // メインシーンに遷移
+
+                    this.backgroundMusic.stop();
+
+                });
+
+                // 「ゲーム開始」ボタンにホバー時のエフェクト
+                this.startButton.on('pointerover', () => {
+                    this.startButton.setScale(1.1); // ボタンを少し大きくする
+                });
+                this.startButton.on('pointerout', () => {
+                    this.startButton.setScale(1); // ボタンのサイズを元に戻す
+                });
+
+
+
+                
+                this.settingsButton = this.add.sprite(400, 450, 'settingsButton').setInteractive();
+                this.settingsButton.on('pointerdown', () => {
+                    //設定画面に遷移
+                    this.scene.start('MainScene'); // メインシーンに遷移
+                });
+                     // 「ゲーム開始」ボタンにホバー時のエフェクト
+                     this.settingsButton.on('pointerover', () => {
+                        this.settingsButton.setScale(1.1); // ボタンを少し大きくする
+                    });
+                    this.settingsButton.on('pointerout', () => {
+                        this.settingsButton.setScale(1); // ボタンのサイズを元に戻す
+                    });
+                    
+                this.add.image(400, 150, 'logo').setScale(0.3,0.2);
+
+                this.backgroundMusic = this.sound.add('backgroundMusic');
+
+                // バックグラウンドミュージックをループで再生
+                this.backgroundMusic.play({ loop: true });
+
+        }
+
+
+        update() {
+            // 背景画像を縦方向にスクロールさせる
+            this.background1.tilePositionY -= 1; // 上方向にスクロール
+          //  this.background2.tilePositionY -= 1;
+        }
+                
+        }
+
+
+        class MainScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'MainScene' });
+                this.lifePoints = 3;  // ライフポイントの初期値
+                this.initialTime = 60; // タイマーの初期値（秒）
+                this.playerAlive = true; // プレイヤーが生きているかどうか
+
+            }
+
+            preload() {
+                // 背景・自機・弾の画像を読み込む
+                this.load.image('haikei', 'img/haikei.png'); // 背景画像
+                this.load.image('player', 'img/jiki.jpg'); // 自機画像
+                this.load.image('bullet', 'img/tm1.jpg'); // 弾画像
+
+                
+                //ショット音読み込み
+                this.load.audio('shoot', 'audio/shot.mp3'); // 弾の音声を読み込む
+            }
+
+            create() {
+                // 背景画像を追加
+                this.add.image(400, 300, 'haikei').setOrigin(0.5, 0.5);
+
+                // 自機を中央に追加し、サイズを設定
+                this.player = this.physics.add.sprite(400, 500, 'player').setDisplaySize(50, 50);
+
+                //画面外に出さないようにする
+                this.player.setCollideWorldBounds(true);
+                // 弾のグループを作成
+                this.bullets = this.physics.add.group({
+                    defaultKey: 'bullet',
+                    maxSize: 100 // 最大弾数
+                });
+
+                //ショット音
+                this.shootSound = this.sound.add('shoot');
+
+
+
+                //カウントダウンタイマー初期値
+                this.initialTime = 60; // タイマーの初期値（秒）
+
+                // タイマー表示のテキスト
+                this.timerText = this.add.text(10, 10, `Time: ${this.initialTime}`, {
+                    font: '20px Arial',
+                    fill: '#ffffff'
+                });
+
+                // 1秒ごとにタイマーを減少させるイベント
+                this.timeEvent = this.time.addEvent({
+                    delay: 1000,                // 1秒ごとに更新
+                    callback: this.updateTimer, // 更新時に呼ばれる関数
+                    callbackScope: this,
+                    loop: true
+                });
+
+
+                this.lifeText = this.add.text(0, 40, `Player Life: ${this.lifePoints}`, {
+                    font: '20px Arial',
+                    fill: '#ffffff'
+                });
+                this.lifeText.setOrigin(1, 0); // 右端に配置
+                this.lifeText.x = this.cameras.main.width - 10; // 画面の右端
+                this.lifeText.y = 10; // 上端に配置
+
+
+                // キー入力の設定
+                this.cursors = this.input.keyboard.createCursorKeys();
+                this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+                this.escapeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+                // 弾発射のタイマーを設定（連射制御用）
+                this.lastFired = 0;
+
+                // 弾のグループを作成
+                this.fallingBullets = this.physics.add.group({
+                    defaultKey: 'bullet',
+                    maxSize: 200
+                });
+
+                // ランダムに弾を降らすタイマー
+                this.time.addEvent({
+                    delay: 500,          // 0.5秒ごとに発射
+                    callback: this.dropBullet,
+                    callbackScope: this,
+                    loop: true
+                });
+
+                
+                //降ってくる弾幕と自機の当たり判定
+                this.physics.add.collider(this.fallingBullets, this.player, this.handleCollision, null, this);
+
+                //降ってくる弾幕と攻撃の当たり判定
+              //  this.physics.add.collider(this.fallingBullets, this.bullets, this.handleCollision_bullets, null, this);
+
+            }
+
+            
+
+
+            updateTimer() {
+                this.initialTime -= 1; // 1秒減少
+                this.timerText.setText(`Time: ${this.initialTime}`); // テキスト更新
+
+                if (this.initialTime <= 0) {
+                    this.timeEvent.remove(); // タイマーイベントを停止
+                    this.timerText.setText("Game Clear");
+                    this.scene.pause();      // ゲームを停止
+                }
+            }
+
+
+            update(time) {
+                const speed = 200;
+                this.player.setVelocity(0);
+
+                // 自機の移動
+                if (this.cursors.left.isDown) {
+                    this.player.setVelocityX(-speed);
+                } else if (this.cursors.right.isDown) {
+                    this.player.setVelocityX(speed);
+                }
+                if (this.cursors.up.isDown) {
+                    this.player.setVelocityY(-speed);
+                } else if (this.cursors.down.isDown) {
+                    this.player.setVelocityY(speed);
+                }
+
+                // エスケープキーが押されたらポーズシーンに移行
+                if (Phaser.Input.Keyboard.JustDown(this.escapeKey)) {
+                    this.scene.pause();
+                    this.scene.launch('PauseScene');
+                }
+                // スペースキーが押され、一定間隔を超えていた場合に弾を発射
+                if (Phaser.Input.Keyboard.JustDown(this.spaceKey) && time > this.lastFired) {
+                    this.shootBullet();
+
+                   // this.fireDoubleShot();
+                    this.lastFired = time + 200; // 0.2秒ごとに発射可能
+                }
+            }
+
+            //降ってくる弾幕とPlayerの当たり判定
+            handleCollision(bullet,player) {
+                // 弾と敵が衝突したときの処理
+                bullet.disableBody(true, true); // 弾を非表示・無効化
+                player.disableBody(true, true);  // 敵を非表示・無効化
+                this.lifePoints -= 1;
+                this.lifeText.setText(`player Life: ${this.lifePoints}`);
+                this.player = this.physics.add.sprite(400, 500, 'player').setDisplaySize(50, 50);
+                this.player.setVisible(true); // プレイヤーを再表示
+
+                // プレイヤーに当たり判定を再設定
+                this.player.setCollideWorldBounds(true); // 自機が画面外に出ないようにする
+                //降ってくる弾幕と自機の当たり判定
+                this.physics.add.collider(this.fallingBullets, this.player, this.handleCollision, null, this);
+
+                // ライフが0以下になった場合
+                if (this.lifePoints <= 0) {
+                    this.lifeText.setText("Game Over");
+                    this.scene.pause(); // ゲームを停止
+                }
+
+
+                // 必要に応じてスコアの追加などの処理もここに追加できます
+            }
+            
+            //当たり判定
+            handleCollision_bullets(bullets,players) {
+                // 弾と敵が衝突したときの処理
+                bullets.disableBody(true, true); // 弾を非表示・無効化
+                players.disableBody(true, true);  // 敵を非表示・無効化
+
+                // 必要に応じてスコアの追加などの処理もここに追加できます
+            }
+
+               // プレイヤーを再表示する処理
+            restartPlayer() {
+                // プレイヤーの位置を再設定し、スプライトを再生成
+                this.player = this.physics.add.sprite(400, 500, 'player');
+                this.player.setCollideWorldBounds(true); // 自機が画面外に出ないようにする
+            }
+
+
+            //弾が降ってくる処理
+            dropBullet() {
+                const x = Phaser.Math.Between(0, 800); // ランダムなx位置
+                const bullet = this.fallingBullets.get(x, 0); // 画面上部に配置
+
+                if (bullet) {
+                    bullet.setActive(true);
+                    bullet.setVisible(true);
+                    bullet.setVelocityY(200); // 下方向に移動
+                    bullet.setDisplaySize(10, 10);
+                    bullet.body.onWorldBounds = true;
+                    bullet.body.world.on('worldbounds', (body) => {
+                        if (body.gameObject === bullet) {
+                            bullet.disableBody(true, true); // 画面外に出たら無効化
+                        }
+                    });
+                }
+            }
+
+            //自機の攻撃処理
+            shootBullet() {
+                const bullet = this.bullets.get(this.player.x, this.player.y - 20);
+                if (bullet) {
+                    bullet.setActive(true);
+                    bullet.setVisible(true);
+                    bullet.setVelocityY(-300); // 弾を上方向に飛ばす
+                    bullet.setDisplaySize(10, 10);
+                    
+                    this.shootSound.play();
+                    bullet.body.onWorldBounds = true;
+                    bullet.body.world.on('worldbounds', (body) => {
+                        if (body.gameObject === bullet) {
+                            bullet.disableBody(true, true); // 画面外に出たら無効化
+                        }
+                    });
+                }
+            }
+        }
+
+
+        // ポーズシーン
+        class PauseScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'PauseScene' });
+                
+                this.selectedOptionIndex = 0;
+                this.options = ["ゲームに戻る", "設定","TOP画面"];
+            }
+
+            create() {
+                // ポーズメニューの項目を表示
+                this.optionTexts = this.options.map((option, index) => {
+                    return this.add.text(400, 250 + index * 50, option, { fontSize: '28px', fill: '#ffffff' }).setOrigin(0.5);
+                });
+
+                this.updateSelection();
+
+                this.escapeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+                this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+                this.downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+                this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+            }
+
+            update() {
+                if (Phaser.Input.Keyboard.JustDown(this.escapeKey)) {
+                    this.scene.stop();
+                    this.scene.resume('MainScene');
+                }
+
+                if (Phaser.Input.Keyboard.JustDown(this.upKey)) {
+                    this.selectedOptionIndex = (this.selectedOptionIndex + this.options.length - 1) % this.options.length;
+                    this.updateSelection();
+                }
+
+                if (Phaser.Input.Keyboard.JustDown(this.downKey)) {
+                    this.selectedOptionIndex = (this.selectedOptionIndex + 1) % this.options.length;
+                    this.updateSelection();
+                }
+
+                if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+                    this.handleSelection();
+                }
+            }
+
+            updateSelection() {
+                this.optionTexts.forEach((text, index) => {
+                    text.setColor(index === this.selectedOptionIndex ? '#ff0000' : '#ffffff');
+                });
+            }
+
+            handleSelection() {
+                switch (this.selectedOptionIndex) {
+                    case 0:
+                        this.scene.stop();
+                        this.scene.resume('MainScene');
+                        break;
+                    case 1:
+                        console.log("Settings selected");
+                        break;
+                    case 2:
+                        console.log("Quit selected");
+                        this.scene.stop('MainScene');
+                        this.scene.start('TitleScene');
+                        break;
+                }
+            }
+        }
+
+
+
+
+        
+        //2ndステージ
+        class SecondScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'SecondScene' });
+            }
+
+            create() {
+            }
+
+            update() {
+
+            }
+        }
+
+
+        
+        //2ndステージ
+        class SettingsScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'SettingsScene' });
+            }
+
+            create() {
+            }
+
+            update() {
+
+            }
+        }
+
+
+
+
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: [TitleScene,MainScene,PauseScene,SecondScene,SettingsScene],
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    debug: false,
+                    checkCollision: { up: true, down: true, left: true, right: true }
+                }
+            },
+            parent: 'gameContainer'
+        };
+
+        const game = new Phaser.Game(config);
+    </script>
+</body>
+</html>

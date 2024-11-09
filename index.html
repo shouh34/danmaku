@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十字キーで操作するPhaserゲーム</title>
+    <!-- PhaserのCDNを読み込む -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+
+</head>
+<body>
+    <script>
+
+
+const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+        
+    }
+};
+
+const game = new Phaser.Game(config);
+
+let player;
+
+//残機
+let zanki=5;
+
+let bullets;
+let enemies;
+let lastFired = 0;
+let score=0;
+const ENEMY_COUNT = 6; // 敵の数を指定
+const ENEMY_SIZE = 0.3; // 敵のサイズを指定（1.0が元のサイズ）
+let gameOverText,zankiText,EnemyText,bomtext;
+//ボム数
+let bomcount=4;
+const fireRate = 200; // ショットの間隔
+let isShooting = true; // 初期状態で発射するように設定
+
+let startSound, shootSound, hitSound; // 音声の変数を宣言
+let backgroundMusic;
+let bgm;
+let Enemy_Life=100;
+let enemyBullets;
+function preload() {
+    //this.load.image('player', 'img/tm1.png');
+    this.load.image('player', 'img/player.jpg'); // path/to/player.png を画像の実パスに変更
+
+    this.load.image('bullet', 'img/tm1.jpg');
+    this.load.image('enemy', 'img/tm1.jpg');
+    this.load.image('haikei', 'img/haikei.png');
+   this.load.image('haikei2', 'img/sky.png');
+
+    this.load.audio('shoo', 'audio/shot.mp3');  // 弾の発射音
+
+    this.load.audio('stage1_bgm', 'audio/bgm.mp3');
+
+}
+
+function create() {
+
+    //背景画像
+    this.add.image(400, 300, 'haikei').setDisplaySize(800, 600);
+
+    //音楽再生
+    bgm = this.sound.add('stage1_bgm');
+    // BGMをループ再生する
+    bgm.play({
+        loop: true
+    });
+
+    //サウンド
+    shootSound = this.sound.add('shoo');
+
+    // 弾のグループを作成
+    bullets = this.physics.add.group({
+        defaultKey: 'bullet',
+        maxSize: 100
+    });
+
+    gameOverText = this.add.text(400, 300, '', {
+        fontSize: '48px',
+        fill: '#ffffff'
+    }).setOrigin(0.5);
+
+
+enemy = this.physics.add.sprite(400, 100, 'enemy');
+
+
+// 弾のグループを作成
+enemyBullets = this.physics.add.group({
+    defaultKey: 'bullet',
+    maxSize: 100  // 同時に表示できる弾の数
+});
+
+
+
+if (isShooting==false) {
+        enemyShootEvent.remove(); // タイマーイベントを削除して停止
+        enemyShootEvent = null;   // 変数をリセット
+    
+}
+// 敵が定期的に弾を撃つイベントを設定
+this.time.addEvent({
+    delay: 1000, // 1秒ごとに弾を発射
+    callback: () => enemyShoot.call(this), // 敵の弾発射関数を呼び出す
+    loop: true
+});
+
+
+
+        this.EnemyText = this.add.text(
+            this.cameras.main.width - 150,  // 画面幅の端から少し左
+            10,                            // 上から少し下
+            "Enemy"+Enemy_Life.toString(),                    // 表示する初期テキスト
+            {
+                fontSize: '20px',
+                fill: '#ffffff'
+            }
+        );
+
+
+
+bomtext= this.add.text(10, 10, 'ボム数 '+bomcount, {
+        fontSize: '32px',
+        fill: '#ffffff'
+    });
+    
+    //残機スコア
+    zankiText = this.add.text(10, 50, '残機:'+zanki, {
+        fontSize: '32px',
+        fill: '#ffffff'
+    });
+
+
+    //３秒後に行う
+    this.time.addEvent({
+        delay: 5000,  // ミリ秒単位で指定（3000ms = 3秒）
+        callback: Recreate_Player,  // 呼び出す関数
+        callbackScope: this,  // 関数を呼び出す際のスコープ
+        loop: false  // 繰り返さない
+    });
+
+
+    // キーボードでスペースキーを取得
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    this.escapeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+    //zキー
+    this.zKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+
+ 
+ gameOverText = this.add.text(400, 300, '', {
+        fontSize: '48px',
+        fill: '#ffffff'
+    }).setOrigin(0.5);
+  
+    // プレイヤーの作成
+    player = this.physics.add.sprite(400, 500, 'player');
+    player.setScale(0.1);
+    player.setSize(10,20); // 当たり判定のサイズを設定 (幅50, 高さ50)
+
+
+    player.setCollideWorldBounds(true);
+    //敵とプレイヤーの当たり判定
+    this.physics.add.overlap(player, enemies, handlePlayerEnemyCollision, null, this);
+    //プレイヤーとEnemyの弾幕が当たり判定
+    this.physics.add.overlap(player, enemyBullets, hitPlayer, null, this);
+
+    //自機の弾がEnemy当たる判定
+    this.physics.add.overlap(enemy,bullets, hitEnemy, null, this);
+    
+}
+
+
+function enemyShoot() {
+    // 弾を取得し、発射する
+    const bullet = enemyBullets.get(enemy.x, enemy.y); // 敵の位置から弾を生成
+
+    if (bullet) {
+        // プレイヤーの位置に向かって弾を飛ばす
+        const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
+        const speed = 200;
+        const velocity = this.physics.velocityFromRotation(angle, speed);
+        bullet.setActive(true);
+      //  bullet.setCollideWorldBounds(true);
+        bullet.setScale(0.1);
+        bullet.setVisible(true);
+        bullet.setVelocity(velocity.x, velocity.y);
+        
+    }
+
+}
+
+
+function update(time) {
+    // プレイヤーの左右移動
+    if (this.cursors.left.isDown) {
+        player.setVelocityX(-200);
+    } else if (this.cursors.right.isDown) {
+        player.setVelocityX(200);
+    } else {
+        player.setVelocityX(0);
+    }
+
+    // スペースキー押された時
+    if (this.spaceKey.isDown && time > lastFired) {
+        fireDoubleShot();
+        shootSound.play(); // ボタンを押したときに音を再生
+
+        lastFired = time + 300;
+    } else if (this.zKey.isDown) {
+        //ボムを発射
+            console.log("Zキーを押し続けています");
+    }
+    else if (Phaser.Input.Keyboard.JustDown(this.escapeKey)) {
+
+        
+
+
+
+    }
+}
+
+
+
+function hitPlayer(player, bullet) {
+    // プレイヤーが弾に当たったときの処理
+
+    //プレイヤー非表示
+    player.setVisible(false);
+    //プレイヤー再表示
+    player.setActive(true).setVisible(true);
+
+    zanki--;
+    if(zanki==0){
+
+      //  this.physics.pause();       // 物理エンジンを一時停止
+       // this.time.pause();          // タイマーを一時停止
+
+    }
+    else{
+
+        zankiText.setText("残機　"+zanki);
+
+    }
+
+
+
+    //エフェクトをいれる
+
+
+    //元の位置に再表示する
+    player.setPosition(400, 500); // プレイヤーの位置を元に戻す
+
+}
+
+let messageText;
+//プレイヤーと敵との衝突処理
+function handlePlayerEnemyCollision(player, enemy) {
+
+    if(zanki==0){
+        messageText = this.add.text(300, 250,"Game Over"+"\n"+"スコア："+score.toString()+"評価C", { fontSize: '20px', color: '#ffffff' });
+        this.physics.pause();
+
+    
+    } else if(zanki<=5){
+    Recreate_Player();
+    }
+}
+
+
+
+//自機を再表示する処理
+function Recreate_Player() {
+    player.setActive(true).setVisible(true);
+    player.setPosition(400, 500); // プレイヤーの位置を元に戻す
+    zanki--;
+    zankiText.setText("残機："+zanki);
+
+}
+
+// ダブルショット関数
+function fireDoubleShot() {
+    const speed = -700;
+    const offset = 10;
+
+    // 左側の弾
+    const leftBullet = bullets.get(player.x - offset, player.y);
+    if (leftBullet) {
+        leftBullet.setActive(true).setVisible(true);
+        leftBullet.setScale(0.03); 
+        leftBullet.body.velocity.y = speed;
+    }
+
+    // 右側の弾
+    const rightBullet = bullets.get(player.x + offset, player.y);
+    if (rightBullet) {
+        rightBullet.setActive(true).setVisible(true);
+        rightBullet.setScale(0.03);
+        rightBullet.body.velocity.y = speed;
+    }
+}
+
+//普通のショット
+function shootBullet() {
+    const bullet = bullets.get();
+
+    if (bullet) {
+        bullet.setActive(true);
+        bullet.setVisible(true);
+        bullet.setPosition(player.x, player.y - 20); // プレイヤーの少し上から発射
+        bullet.setVelocityY(-500);
+        bullet.setScale(0.03); 
+        bullet.setCollideWorldBounds(true);
+        bullet.body.onWorldBounds = true;
+        bullet.body.world.on('worldbounds', function(body) {
+            if (body.gameObject === bullet) {
+                bullet.setActive(false);
+                bullet.setVisible(false);
+            }
+        });
+    }
+}
+
+
+//弾が敵に当たった処理
+function hitEnemy(bullet, enemy) {
+
+
+    // 弾と敵の両方を無効化
+    bullet.setActive(false);
+    bullet.setVisible(false);
+    bullet.setVisible(false);
+    Enemy_Life--;
+    
+this.EnemyText.setText("Enemy"+Enemy_Life.toString());
+    // スコア加算やエフェクトなどの処理もここに追加できます
+    console.log("敵にヒットしました！");
+
+}
+
+
+// 弾の発射を停止・再開する関数
+function toggleEnemyShooting(state) {
+    isShooting = false;
+    bullet.setVisible(false);
+}
+    </script>
+</body>
+</html>
