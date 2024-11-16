@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #f7f9fc, #eaf4ff, #d0e9ff);
+    color: #333; /* 黒に近い文字色に変更 */
+    text-align: center;
+}
+header {
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #d0e9ff, #b4daff);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 軽めの影に変更 */
+}
+header h1 {
+    font-size: 3rem;
+    margin: 0;
+    color: #004085; /* 濃い青系 */
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7); /* 明るい文字の立体感 */
+}
+header p {
+    font-size: 1.2rem;
+    color: #4682b4; /* 明るい青 */
+    margin-top: 0.5rem;
+}
+main {
+    padding: 2rem 1rem;
+}
+.button {
+    display: inline-block;
+    margin: 1rem 1rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    color: white;
+    background-color: #007bff; /* 明るめの青 */
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+.button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+    transform: translateY(-3px);
+}
+.screenshot-container {
+    margin: 2rem 0;
+}
+.screenshot {
+    width: 90%;
+    max-width: 800px;
+    border: 5px solid rgba(0, 0, 0, 0.1); /* 白背景に合わせて変更 */
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+footer {
+    background-color: #b4daff; /* 明るい青背景 */
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    color: #333; /* 黒に近い文字色 */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* 軽めの影 */
+}
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
+}
