@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ファイル整理アプリ | shouの開発室</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .screenshot {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .screenshot img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .description, .features, .links {
+      margin: 1.5rem 0;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 0.5rem 1rem 0 0;
+      padding: 0.6rem 1rem;
+      background-color: #0066cc;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .links a:hover {
+      background-color: #004d99;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: #222;
+      color: #ccc;
+    }
+
+    @media screen and (max-width: 600px) {
+      main {
+        margin: 1rem;
+      }
+
+      .links a {
+        display: block;
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ファイル整理アプリ</h1>
+    <p>shouの個人開発プロジェクト</p>
+  </header>
+
+  <main>
+    <section class="description">
+      <h2>📝 アプリ概要</h2>
+      <p>
+        「ファイル整理アプリ」は、フォルダ内のファイルを自動的に分類・移動できるWindows用のユーティリティアプリです。
+        拡張子別や日付別に簡単に整理できます。
+      </p>
+    </section>
+
+    <section class="screenshot">
+      <h2>🖼️ スクリーンショット</h2>
+      <img src="screen.png" alt="アプリの画面" width="500" height="300">
+    </section>
+
+    <section class="features">
+      <h2>🔧 主な機能</h2>
+      <ul>
+        <li>拡張子ごとの自動フォルダ分け</li>
+        <li>日付別分類</li>
+        <li>ドラッグ＆ドロップ対応</li>
+        <li>操作が簡単なGUI</li>
+      </ul>
+    </section>
+
+    <section class="links">
+      <h2>📦 ダウンロード・リンク</h2>
+      <a href="https://github.com/yourname/file-organizer" target="_blank">GitHubで見る</a>
+      <a href="https://yourdomain.com/download/fileorganizer.zip" target="_blank">アプリをダウンロード</a>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 shouの開発室
+  </footer>
+
+</body>
+</html>
