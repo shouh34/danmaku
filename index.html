@@ -1,38 +1,110 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="style1.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
-    <title>弾幕シューティングゲーム - トップページ</title>
-    <style>
-      
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>shouの個人開発室</title>
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #444;
+    }
+
+    .project {
+      margin-bottom: 1.5rem;
+    }
+
+    .project-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #222;
+      color: #ccc;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      bottom: 0;
+      margin-top: 3rem;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        margin: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>弾幕シューティングゲーム</h1>
-        <p>美しい弾幕を避け、強敵を撃破せよ！</p>
-    </header>
-    <main>
-        <div class="button-container">
-            <a href="game.html" class="button">ゲームを開始</a>
-            <a href="site.html" class="button">ゲームの紹介</a>
-           <!---- <a href="ranking.html" class="button">ランキングを見る</a>-->
-            <a href="coment.html" class="button">コメントを見る</a>
-        </div>
+  <header>
+    <h1>shouの個人開発室</h1>
+    <nav>
+      <a href="#about">自己紹介</a>
+      <a href="#projects">開発アプリ</a>
+      <a href="#contact">連絡先</a>
+    </nav>
+  </header>
 
-        <div class="screenshot-container">
-          <a href="img/danmaku_top_screen.png" data-lightbox="lightbox"><img src="img/danmaku_top_screen.png" alt="ゲームプレイ画面" class="screenshot"></a>
-        </div>
+  <div class="container">
+    <section id="about">
+      <h2>👤 自己紹介</h2>
+      <p>こんにちは、shouと申します。趣味で個人開発をしており、WindowsアプリやWebサービス、Chrome拡張などを作っています。</p>
+    </section>
 
-        <p>驚異の弾幕をくぐり抜け、極限のスリルを味わおう！</p>
-    </main>
-    <footer>
-        <p>&copy; 2024 弾幕物語開発チーム. <a href="contact.html">お問い合わせ</a></p>
-    </footer>
+    <section id="projects">
+      <h2>🛠️ 開発したアプリ</h2>
+
+      <div class="project">
+        <div class="project-title">📁 ファイル整理アプリ</div>
+        <p>Windows用のファイル管理ツール。ドラッグ＆ドロップで簡単に整理できます。</p>
+        <a href="https://github.com/yourname/file-organizer" target="_blank">GitHubで見る</a>
+      </div>
+
+      <div class="project">
+        <div class="project-title">🗓 賞味期限管理アプリ</div>
+        <p>冷蔵庫の中身を管理して、賞味期限前に通知してくれるアプリです。</p>
+        <a href="https://github.com/yourname/exp-date-app" target="_blank">GitHubで見る</a>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>📬 連絡先・SNS</h2>
+      <ul>
+        <li>GitHub：<a href="https://github.com/shouh34?tab=repositories" target="_blank">Github</a></li>
+        <li>Email：shouheirai@gmail.com</li>
+      </ul>
+    </section>
+  </div>
+
 </body>
 </html>
