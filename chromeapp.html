@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>画像一括ダウンロード拡張機能 | shouの開発室</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .screenshot {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .screenshot img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .description, .features, .links {
+      margin: 1.5rem 0;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 0.5rem 1rem 0 0;
+      padding: 0.6rem 1rem;
+      background-color: #28a745;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .links a:hover {
+      background-color: #1e7e34;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: #222;
+      color: #ccc;
+    }
+
+    @media screen and (max-width: 600px) {
+      main {
+        margin: 1rem;
+      }
+
+      .links a {
+        display: block;
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>画像一括ダウンロード</h1>
+    <p>shouの個人開発 Chrome拡張機能</p>
+  </header>
+
+  <main>
+    <section class="description">
+      <h2>🧩 拡張機能の概要</h2>
+      <p>
+        「画像一括ダウンロード」は、現在表示しているWebページ内の画像を一括で保存できるChrome拡張機能です。手作業で1枚ずつ保存する手間をなくし、効率的に画像を収集できます。
+      </p>
+    </section>
+
+    <section class="screenshot">
+      <h2>🖼️ スクリーンショット</h2>
+      <img src="screen2.png" alt="拡張機能の画面" width="500" height="300">
+    </section>
+
+    <section class="features">
+      <h2>🔧 主な機能</h2>
+      <ul>
+        <li>現在のタブ内のすべての画像を検出</li>
+        <li>画像を一括選択・ダウンロード</li>
+        <li>画像URLフィルタ（サイズ・拡張子指定）</li>
+        <li>保存先の指定（ZIP形式でまとめて保存も可能）</li>
+      </ul>
+    </section>
+
+    <section class="links">
+      <h2>📦 ダウンロード・リンク</h2>
+      <a href="https://github.com/yourname/image-downloader-extension" target="_blank">GitHubで見る</a>
+      <a href="https://yourdomain.com/download/imagedownloader.crx" target="_blank">拡張機能をダウンロード</a>
+      <a href="https://chrome.google.com/webstore/detail/your-extension-id" target="_blank">Chromeウェブストア</a>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 shouの開発室
+  </footer>
+
+</body>
+</html>
