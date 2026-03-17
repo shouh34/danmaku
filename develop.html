@@ -1,118 +1,160 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>開発アプリ一覧 - shouの開発室</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SynkNote - アプリ詳細</title>
 
-    header {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
+<style>
 
-    main {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+body{
+font-family:-apple-system,BlinkMacSystemFont;
+margin:0;
+background:#f4f8ff;
+color:#333;
+}
 
-    h2 {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+header{
+background:linear-gradient(135deg,#4facfe,#00c6ff);
+color:white;
+text-align:center;
+padding:40px 20px;
+}
 
-    .app-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
+.container{
+max-width:900px;
+margin:auto;
+padding:30px;
+}
 
-    .app-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-    }
+.app-title{
+font-size:28px;
+margin-bottom:10px;
+}
 
-    .app-card img {
-      width: 100%;
-      border-radius: 6px;
-      object-fit: cover;
-      height: 150px;
-    }
+.app-description{
+font-size:16px;
+margin-bottom:20px;
+}
 
-    .app-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin: 0.8rem 0 0.5rem;
-    }
+.feature{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
 
-    .app-description {
-      flex: 1;
-    }
+.feature h3{
+margin-top:0;
+}
 
-    .app-link {
-      margin-top: 1rem;
-      text-align: right;
-    }
+.screenshot{
+text-align:center;
+margin:20px 0;
+}
 
-    .app-link a {
-      text-decoration: none;
-      color: #0066cc;
-      font-weight: bold;
-    }
+.screenshot img{
+width:250px;
+border-radius:20px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #222;
-      color: #ccc;
-      margin-top: 3rem;
-    }
-  </style>
+.button{
+display:inline-block;
+margin-top:10px;
+padding:10px 16px;
+background:#4facfe;
+color:white;
+border-radius:6px;
+text-decoration:none;
+}
+
+.button:hover{
+background:#2d8cf0;
+}
+
+footer{
+text-align:center;
+margin-top:40px;
+padding:20px;
+color:#777;
+}
+
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>shouの開発アプリ一覧</h1>
-  </header>
 
-  <main>
-    <h2>📱 開発したアプリ</h2>
-    <div class="app-list">
+<header>
+<h1>SynkNote</h1>
+<p>iCloud同期対応メモアプリ</p>
+</header>
 
-      <div class="app-card">
-        <img src="img1.png" alt="テキストエディタの画像" />
-        <div class="app-title">テキストエディタ for Windows</div>
-        <div class="app-description">
-          軽量・シンプルで高機能。プログラミングにも日常使いにも対応した日本語対応のWindows用テキストエディタです。<br>
-          シンタックスハイライト、文字コード選択、テーマ切り替えなどに対応。
-        </div>        <div class="app-link"><a href="app_index1.html" target="_blank">▶ 詳しく見る</a></div>
-      </div>
+<div class="container">
+
+<div class="app-description">
+SyncNoteはシンプルで使いやすいiOS用メモアプリです。  
+iCloudを利用して複数のAppleデバイス間でメモを同期できます。
+</div>
+
+<div class="screenshot">
+<img src="img1.png" alt="アプリ画面">
+</div>
+
+<h2>名前の由来</h2>
+
+<div class="feature">
+
+<p>
+SynkNoteは「Sync（同期）」と「Link（つながり）」という
+2つの言葉を組み合わせた造語です。
+
+メモをデバイス間で同期し、
+ユーザーの情報やアイデアをどこからでも
+つなげられるアプリにしたいという思いから
+この名前を付けました。
+</p>
+
+</div>
 
 
-      <div class="app-card">
-        <img src="screen2.png" alt="アプリ3の画像" />
-        <div class="app-title">Chrome拡張「画像ゲッター」</div>
-        <div class="app-description">表示中のページからすべての画像URLを抽出し、一括保存できるChrome拡張。</div>
-        <div class="app-link"><a href="chromeapp.html" target="_blank">▶ 詳しく見る</a></div>
-      </div>
+<h2>主な機能</h2>
+
+<div class="feature">
+<h3>📝 メモ作成</h3>
+<p>簡単にメモを作成・編集・検索・できます。画像付きのメモも投稿できます</p>
+<p><a href="">詳細を見る</a></p>
+</div>
+
+<div class="feature">
+<h3>☁️ iCloud同期</h3>
+<p>iCloudを利用してiPhoneやiPadなど複数のデバイス間でメモを同期できます。</p>
+<p><a href="">詳細を見る</a></p>
+</div>
 
 
+<div class="feature">
+<h3>🖼 設定</h3>
+<p>アプリの設定をカスタマイズできます。</p>
+<p><a href="">詳細を見る</a></p>
+</div>
 
-    </div>
-  </main>
+
+<div class="feature">
+<h3>ウイジェット機能</h3>
+<p>ホーム画面にウイジェットを追加して、簡単にメモを確認できます。</p>
+<p><a href="">詳細を見る</a></p>
+
+</div>
+
+<a class="button" href="develop.html">← アプリ一覧に戻る</a>
+
+</div>
+
+<footer>
+© shouの開発室
+</footer>
 
 </body>
 </html>
